@@ -4,6 +4,7 @@ import { authModalState } from '@/atoms/authModalAtom'
 
 import React from 'react'
 import Login from './Login'
+import SignUp from './SignUp'
 
 export default function AuthInputs() {
   const modalState = useRecoilValue(authModalState)
@@ -14,7 +15,7 @@ export default function AuthInputs() {
           width='100%'
           mt={ 4 }>
       { modalState.view === 'login' && <Login /> }
-      {/* { modalState.view === 'signup' && <SignUP /> } */}
+      { modalState.view === 'signup' && <SignUp /> }
     </Flex>
   )
 }
