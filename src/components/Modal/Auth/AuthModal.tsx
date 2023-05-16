@@ -42,7 +42,7 @@ export default function AuthModal() {
                   width='70%'>
               <OAuthButtons />
 
-              <Text color='gray.400'
+              <Text color='gray.500'
                     fontWeight={ 700 }>
                 OR
               </Text>
