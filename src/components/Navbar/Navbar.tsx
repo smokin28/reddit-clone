@@ -1,10 +1,14 @@
 import { Flex, Image } from '@chakra-ui/react'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { auth } from '@/firebase/clientApp'
 
 import React from 'react'
 import SearchInput from './SearchInput'
 import RightContent from './RightContent/RightContent'
 
 export default function Navbar() {
+  const [user, loading, error] = useAuthState(auth)
+
   return (
     <Flex bg='white'
           height='44px'
@@ -24,7 +28,7 @@ export default function Navbar() {
       </Flex>
       {/* <Directory /> */}
       <SearchInput />
-      <RightContent />
+      <RightContent user={ user } />
     </Flex>
   )
 }

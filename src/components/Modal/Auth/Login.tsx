@@ -1,8 +1,11 @@
 import { authModalState } from '@/atoms/authModalAtom'
 import { Text, Button, Flex, Input } from '@chakra-ui/react'
 import { useSetRecoilState } from 'recoil'
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { auth } from '@/firebase/clientApp'
 
 import React, { useState } from 'react'
+import { FIREBASE_ERRORS } from '@/firebase/errors'
 
 export default function Login() {
   const setAuthModalState = useSetRecoilState(authModalState)
@@ -11,7 +14,18 @@ export default function Login() {
     password: ''
   })
 
-  const onSubmit = () => {}
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error
+  ] = useSignInWithEmailAndPassword(auth)
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    signInWithEmailAndPassword(loginForm.email, loginForm.password)
+  }
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginForm(prev => ({
@@ -63,13 +77,39 @@ export default function Login() {
              }}
              bg='gray.50' />
       
+      <Text textAlign='center'
+            color='red'
+            fontSize='10pt'>
+        { FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS] }
+      </Text>
+
       <Button width='100%'
               height='36px'
               mt={ 2 }
               mb={ 2 }
-              type='submit'>
+              type='submit'
+              isLoading={ loading }>
         Log In
       </Button>
+
+      <Flex justifyContent='center'
+            mb={ 2 }>
+        <Text fontSize='9pt'
+              mr={ 1}>
+          Forgot your passwor?
+        </Text>
+        <Text fontSize='9pt'
+              color='blue.500'
+              cursor='pointer'
+              onClick={ () => 
+                setAuthModalState((prev) => ({
+                  ...prev,
+                  view: 'resetPassword'
+                }))
+              }>
+          Reset
+        </Text>
+      </Flex>
 
       <Flex fontSize='9pt'
             justifyContent='center'>
