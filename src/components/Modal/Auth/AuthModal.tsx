@@ -8,6 +8,7 @@ import { auth } from '@/firebase/clientApp'
 import React, { useEffect } from 'react'
 import AuthInputs from './AuthInputs'
 import OAuthButtons from './OAuthButtons'
+import ResetPassword from './ResetPassword'
 
 export default function AuthModal() {
   const [modalState, setModalState] = useRecoilState(authModalState)
@@ -21,7 +22,7 @@ export default function AuthModal() {
 
   useEffect(() => {
     if (user) handleClose()
-  })
+  }, [user])
   
   return (
     <>
