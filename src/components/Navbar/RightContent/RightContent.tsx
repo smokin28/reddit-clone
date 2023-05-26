@@ -7,6 +7,7 @@ import React from 'react'
 import AuthButtons from './AuthButtons'
 import AuthModal from '@/components/Modal/Auth/AuthModal'
 import Icons from './Icons'
+import UserMenu from './UserMenu'
 
 interface Props {
   // children?: ReactNode
@@ -28,6 +29,7 @@ export default function RightContent({ user }: Props) {
           <AuthButtons /> 
         ) } */}
         { user ? <Icons /> : <AuthButtons /> }
+        { <UserMenu user={ user }/> }
         {/* <MenuWrapper /> */}
       </Flex>
     </>
