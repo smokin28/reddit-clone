@@ -3,6 +3,7 @@ import { Flex, Icon, Menu, MenuButton, MenuList, Text } from '@chakra-ui/react'
 import { TiHome } from 'react-icons/ti'
 
 import React from 'react'
+import Communities from './Communities'
 
 export default function Directory() {
 
@@ -38,7 +39,7 @@ export default function Directory() {
         </Flex>
       </MenuButton>
       <MenuList>
-        {/* <Communities /> */}
+        <Communities />
       </MenuList>
     </Menu>
   )
