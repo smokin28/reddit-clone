@@ -3,7 +3,7 @@ import { Box, Button, Divider, Modal, ModalBody, ModalCloseButton, ModalContent,
 import { BsFillEyeFill, BsFillPersonFill } from 'react-icons/bs'
 import { HiLockClosed } from 'react-icons/hi'
 import { auth, firestore } from '@/firebase/clientApp'
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import { doc, runTransaction, serverTimestamp } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 import React, { useState } from 'react'
@@ -48,19 +48,28 @@ export default function CreateCommunityModal({ open, handleClose }: Props) {
     try {
       // Create the comunity document in firestore
       const communityDocRef = doc(firestore, 'communities', communityName)
-      const communityDoc = await getDoc(communityDocRef)
 
-      // Check if community exists in db
-      if (communityDoc.exists()) {
-        throw new Error(`Sorry, r/${ communityName } is taken. Try another.`)
-      }
+      await runTransaction(firestore, async (transaction) => {
+        const communityDoc = await transaction.get(communityDocRef)
 
-      // Create new community
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType
+        // Check if community exists in db
+        if (communityDoc.exists()) {
+          throw new Error(`Sorry, r/${ communityName } is taken. Try another.`)
+        }
+
+        // Create new community
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType
+        })
+
+        // Create communitySnippet on user
+        transaction.set(doc(firestore, `users/${ user?.uid }/communitySnippets`, communityName), {
+          communityId: communityName,
+          isModerator: true
+        })
       })
     } catch (error: any) {
       console.log('handleCreateCommunity: error', error)
