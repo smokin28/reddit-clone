@@ -6,6 +6,7 @@ import { GetServerSidePropsContext } from 'next'
 import React from 'react'
 import safeJsonStringify from 'safe-json-stringify'
 import NotFound from '@/components/Community/NotFound'
+import Header from '@/components/Community/Header'
 
 interface Props {
   communityData: Community
@@ -17,7 +18,9 @@ export default function CommunityPage({ communityData }: Props) {
   }
 
   return (
-    <div>WELCOME TO { communityData.id }</div>
+    <>
+      <Header communityData={ communityData } />
+    </>
   )
 }
 
