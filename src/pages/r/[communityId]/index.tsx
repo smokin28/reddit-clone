@@ -7,6 +7,7 @@ import React from 'react'
 import safeJsonStringify from 'safe-json-stringify'
 import NotFound from '@/components/Community/NotFound'
 import Header from '@/components/Community/Header'
+import PageContent from '@/components/Layout/PageContent'
 
 interface Props {
   communityData: Community
@@ -20,6 +21,14 @@ export default function CommunityPage({ communityData }: Props) {
   return (
     <>
       <Header communityData={ communityData } />
+      <PageContent>
+        <>
+          <div>LHS</div>
+        </>
+        <>
+          <div>RHS</div>
+        </>
+      </PageContent>
     </>
   )
 }
